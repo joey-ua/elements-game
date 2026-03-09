@@ -1,0 +1,183 @@
+:root {
+  font-family: "Courier New", Courier, monospace;
+  color: #e9e3d3;
+  background: #171412;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 20% 20%, #302621, #171412 60%);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 16px;
+  padding: 16px;
+}
+
+.hud {
+  border: 2px solid #715946;
+  background: #1e1916;
+  padding: 12px;
+}
+
+.hud h1,
+.hud h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.hud p {
+  margin: 6px 0;
+}
+
+.intent-block ul {
+  margin: 6px 0;
+  padding-left: 18px;
+}
+
+.end-turn {
+  margin-top: 8px;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #c79149;
+  background: #48301b;
+  color: #ffe6bf;
+  cursor: pointer;
+}
+
+.board-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.board-row {
+  display: flex;
+  gap: 4px;
+}
+
+.axis {
+  display: grid;
+  color: #97816f;
+  font-size: 12px;
+}
+
+.top-axis {
+  grid-template-columns: 14px repeat(10, 1fr);
+  width: 504px;
+}
+
+.left-axis {
+  grid-template-rows: repeat(10, 1fr);
+  width: 14px;
+  height: 500px;
+}
+
+.axis span {
+  text-align: center;
+  line-height: 1;
+}
+
+.board {
+  width: 500px;
+  height: 500px;
+  display: grid;
+  border: 2px solid #6e5b4b;
+  background: #241d18;
+}
+
+.tile {
+  border: 1px solid #3a2f28;
+  background: #2c241e;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #f3ebdb;
+}
+
+.tile:hover {
+  filter: brightness(1.1);
+}
+
+.tile-obstacle {
+  background: #4b4e54;
+}
+
+.tile-move {
+  background: #294f36;
+}
+
+.tile-attack {
+  background: #643030;
+}
+
+.tile-selected {
+  outline: 2px solid #ffe172;
+  outline-offset: -2px;
+}
+
+.tile-intent {
+  box-shadow: inset 0 0 0 2px #d18641;
+}
+
+.unit {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid;
+  font-size: 10px;
+}
+
+.unit small {
+  font-size: 10px;
+}
+
+.unit-player {
+  background: #2764ad;
+  border-color: #9aceff;
+}
+
+.unit-enemy {
+  background: #a33838;
+  border-color: #ffc9c9;
+}
+
+.obstacle {
+  color: #0f1113;
+  font-size: 16px;
+}
+
+.status-line {
+  margin-top: 8px;
+  min-height: 20px;
+}
+
+@media (max-width: 920px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .board {
+    width: min(92vw, 500px);
+    height: min(92vw, 500px);
+  }
+
+  .top-axis {
+    width: min(92vw, 504px);
+  }
+
+  .left-axis {
+    height: min(92vw, 500px);
+  }
+}
