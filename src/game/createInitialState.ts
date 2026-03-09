@@ -1,22 +1,51 @@
 import {
   BOARD_SIZE,
+  ENEMY_COUNT,
   ENEMY_HP,
   ENEMY_MOVEMENT,
-  INITIAL_ENEMY_POSITIONS,
-  INITIAL_OBSTACLES,
-  INITIAL_PLAYER_POSITIONS,
+  OBSTACLE_COUNT,
+  PLAYER_COUNT,
   PLAYER_HP,
-  PLAYER_MOVEMENT
+  PLAYER_MOVEMENT,
 } from "./constants";
 import { computeEnemyIntents } from "./ai";
-import type { GameState } from "./types";
+import type { Coord, GameState } from "./types";
+
+const randomInt = (min: number, max: number): number =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
+
+const buildRandomCoords = (
+  count: number,
+  yMin: number,
+  yMax: number,
+): Coord[] => {
+  const used = new Set<string>();
+  const coords: Coord[] = [];
+
+  while (coords.length < count) {
+    const coord = {
+      x: randomInt(0, BOARD_SIZE - 1),
+      y: randomInt(yMin, yMax),
+    };
+    const key = `${coord.x},${coord.y}`;
+    if (used.has(key)) continue;
+    used.add(key);
+    coords.push(coord);
+  }
+
+  return coords;
+};
 
 export const createInitialState = (): GameState => {
+  const enemyPositions = buildRandomCoords(ENEMY_COUNT, 0, 2);
+  const obstaclePositions = buildRandomCoords(OBSTACLE_COUNT, 3, 6);
+  const playerPositions = buildRandomCoords(PLAYER_COUNT, 7, 9);
+
   const state: GameState = {
     turn: 1,
     boardSize: BOARD_SIZE,
     units: [
-      ...INITIAL_PLAYER_POSITIONS.map((position, index) => ({
+      ...playerPositions.map((position, index) => ({
         id: `P${index + 1}`,
         team: "player" as const,
         hp: PLAYER_HP,
@@ -25,9 +54,9 @@ export const createInitialState = (): GameState => {
         attackDamage: 1,
         position,
         hasMoved: false,
-        hasAttacked: false
+        hasAttacked: false,
       })),
-      ...INITIAL_ENEMY_POSITIONS.map((position, index) => ({
+      ...enemyPositions.map((position, index) => ({
         id: `E${index + 1}`,
         team: "enemy" as const,
         hp: ENEMY_HP,
@@ -36,16 +65,16 @@ export const createInitialState = (): GameState => {
         attackDamage: 1,
         position,
         hasMoved: false,
-        hasAttacked: false
-      }))
+        hasAttacked: false,
+      })),
     ],
-    obstacles: INITIAL_OBSTACLES,
+    obstacles: obstaclePositions,
     selectedUnitId: null,
-    enemyIntents: []
+    enemyIntents: [],
   };
 
   return {
     ...state,
-    enemyIntents: computeEnemyIntents(state)
+    enemyIntents: computeEnemyIntents(state),
   };
 };
